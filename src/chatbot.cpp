@@ -8,6 +8,10 @@
 #include "graphedge.h"
 #include "chatbot.h"
 
+using std::cout;
+using std::endl;
+
+
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {
@@ -44,7 +48,56 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
-
+// 2. Copy Constructor
+ChatBot::ChatBot(const ChatBot &source){
+    //_currentNode = source._currentNode;
+    _image = (source._image != NULL) ? new wxBitmap(*source._image) : NULL;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    cout << "ChatBot Copy Constructor" << std::endl;
+}
+// 3. Copy Assignment Operator
+ChatBot &ChatBot::operator=(const ChatBot &source){
+    if (this == &source) return *this;
+    //_currentNode = source._currentNode;
+    if (_image != NULL) delete _image;
+    _image = (source._image != NULL) ? new wxBitmap(*source._image) : NULL;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    cout << "ChatBot Assignment (lval refernce) Operator" << std::endl;
+    return *this;
+}
+// 4. Move Constructor
+ChatBot::ChatBot(ChatBot &&source){
+    //_currentNode = source._currentNode;
+    _image = source._image;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+  
+    source._image = nullptr;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    cout << "ChatBot Move (rval reference) Constructor" << std::endl;
+}
+// 5. Move Assignment Operator
+ChatBot &ChatBot::operator=(ChatBot &&source){
+    if (this == &source) return *this;
+    if (_image != NULL) delete _image;
+    //_currentNode = source._currentNode;
+    _image = (source._image != NULL) ? new wxBitmap(*source._image) : NULL;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    cout << "ChatBot Move (rval reference) Assignment Operator" << std::endl;
+    return *this;
+}
 ////
 //// EOF STUDENT CODE
 
